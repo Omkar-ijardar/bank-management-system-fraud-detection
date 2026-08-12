@@ -1,0 +1,89 @@
+{
+  "info": {
+    "name": "Bank Management - Transfer Flow (B2) - Full Stack",
+    "description": "Exercises bank-account-service (8082) and transaction-service (8083) together. Run sql/schema.sql and sql/seed-test-accounts.sql in bank-account-service first.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "accountServiceUrl", "value": "http://localhost:8082" },
+    { "key": "transactionServiceUrl", "value": "http://localhost:8083" }
+  ],
+  "item": [
+    {
+      "name": "1. [account-service] Get account 1",
+      "request": { "method": "GET", "url": "{{accountServiceUrl}}/api/accounts/1" }
+    },
+    {
+      "name": "2. [account-service] Get account 2",
+      "request": { "method": "GET", "url": "{{accountServiceUrl}}/api/accounts/2" }
+    },
+    {
+      "name": "3. [transaction-service] Transfer - ALLOWED (5000)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{transactionServiceUrl}}/api/transactions/transfer",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fromAccountId\": 1,\n  \"toAccountId\": 2,\n  \"amount\": 5000\n}"
+        }
+      }
+    },
+    {
+      "name": "4. [account-service] Verify account 1 balance dropped",
+      "request": { "method": "GET", "url": "{{accountServiceUrl}}/api/accounts/1" }
+    },
+    {
+      "name": "5. [transaction-service] Transfer - FLAGGED (75000)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{transactionServiceUrl}}/api/transactions/transfer",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fromAccountId\": 1,\n  \"toAccountId\": 2,\n  \"amount\": 75000\n}"
+        }
+      }
+    },
+    {
+      "name": "6. [account-service] Verify account 1 balance UNCHANGED after flag",
+      "request": { "method": "GET", "url": "{{accountServiceUrl}}/api/accounts/1" }
+    },
+    {
+      "name": "7. [transaction-service] Transfer - INSUFFICIENT BALANCE (expect 400)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{transactionServiceUrl}}/api/transactions/transfer",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fromAccountId\": 2,\n  \"toAccountId\": 1,\n  \"amount\": 999999\n}"
+        }
+      }
+    },
+    {
+      "name": "8. [transaction-service] Transfer - SAME ACCOUNT (expect 400)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{transactionServiceUrl}}/api/transactions/transfer",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fromAccountId\": 1,\n  \"toAccountId\": 1,\n  \"amount\": 100\n}"
+        }
+      }
+    },
+    {
+      "name": "9. [transaction-service] Transfer - NON-EXISTENT ACCOUNT (expect 404)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{transactionServiceUrl}}/api/transactions/transfer",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fromAccountId\": 1,\n  \"toAccountId\": 9999,\n  \"amount\": 100\n}"
+        }
+      }
+    }
+  ]
+}

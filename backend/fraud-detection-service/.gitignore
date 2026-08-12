@@ -1,0 +1,25 @@
+# Visual Studio
+.vs/
+
+# User-specific files
+*.user
+*.suo
+
+# Build folders
+bin/
+obj/
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.*
+
+# Rider
+.idea/
+
+# VS Code
+.vscode/
+
+appsettings.json
