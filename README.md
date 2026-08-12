@@ -12,7 +12,7 @@
 > 🚀 **LIVE DEMO LINKS FOR RECRUITERS & REVIEWERS:**
 > - 🌐 **Customer Banking Portal**: [http://16.170.40.145:5173](http://16.170.40.145:5173)
 > - 👑 **Executive Admin Control Center**: [http://16.170.40.145:5173/admin/login](http://16.170.40.145:5173/admin/login)
-> - ⚡ **Fraud Detection Swagger API**: [http://16.170.40.145:5000/swagger](http://16.170.40.145:5000/swagger)
+
 
 An enterprise-grade, distributed microservices banking application built with **Spring Boot 3**, **.NET 8**, **React + Vite (Glassmorphic UI)**, **MySQL 8**, and **Google Gemini AI**. The system features real-time transaction processing, high-value transfer verification, automated fraud detection, IVR call simulation, and an Executive Admin Control Center.
 
