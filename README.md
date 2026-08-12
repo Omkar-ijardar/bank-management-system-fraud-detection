@@ -1,4 +1,4 @@
-# 🏦 Enterprise Microservices Banking Management System & AI Fraud Detection Platform
+# 🏦 BANK MANAGEMENT SYSTEM WITH FRAUD DETECTION & IVR
 
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.0-brightgreen.svg)](https://spring.io/projects/spring-boot)
 [![.NET 8](https://img.shields.io/badge/.NET-8.0-blueviolet.svg)](https://dotnet.microsoft.com/)
@@ -94,14 +94,13 @@ Recruiters and hiring managers can test the live production environment hosted o
 | :--- | :--- | :--- |
 | 🌐 **Customer Banking Portal** | [http://16.170.40.145:5173](http://16.170.40.145:5173) | Register a new customer account or log in |
 | 👑 **Executive Admin Portal** | [http://16.170.40.145:5173/admin/login](http://16.170.40.145:5173/admin/login) | Full live metrics & fraud command center |
-| ⚡ **Fraud Service Swagger API** | [http://16.170.40.145:5000/swagger](http://16.170.40.145:5000/swagger) | Interactive .NET 8 OpenAPI documentation |
 
 ---
 
 ## 🚀 Getting Started (Local Deployment)
 
 ### Prerequisites
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (with Docker Compose v2+)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (with Docker Compose )
 - [Git](https://git-scm.com/)
 
 ### One-Command Launch
@@ -126,7 +125,7 @@ Access the application locally:
 
 ### 1. Provision EC2 Instance
 - **OS**: Ubuntu 24.04 LTS / Ubuntu 22.04 LTS
-- **Instance Type**: `t3.medium` or `c7i-flex` (Min 2 vCPU, 4GB RAM)
+- **Instance Type**:  `m7i-flex.large` (Min 2 vCPU, 8GB RAM)
 - **Storage**: 20 GB GP3 SSD
 
 ### 2. Configure AWS Security Group Inbound Rules
@@ -184,6 +183,3 @@ docker compose up -d --build
 - `GET /api/Fraud/logs` — Fetch all recorded fraud security events
 
 ---
-
-## 📄 License
-This project is released under the **MIT License**.
