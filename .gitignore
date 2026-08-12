@@ -1,0 +1,13 @@
+node_modules/
+bin/
+obj/
+target/
+.vscode/
+.idea/
+*.log
+.env
+/.metadata/
+project.tar.gz
+*.jar
+.DS_Store
+dist/
