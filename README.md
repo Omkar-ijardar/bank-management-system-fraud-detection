@@ -25,7 +25,7 @@ The application is decomposed into 9 autonomous microservices communicating via 
 ```
                                   +------------------------------------+
                                   |         React Frontend UI          |
-                                  |    (Vite / Nginx Port 5173/80)     |
+                                  |         (Vite Port 5173)           |
                                   +-----------------+------------------+
                                                     |
              +--------------------+-----------------+--------------------+--------------------+
