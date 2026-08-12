@@ -6,8 +6,13 @@
 [![Vite](https://img.shields.io/badge/Vite-5.0-646cff.svg)](https://vitejs.dev/)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0-4479a1.svg)](https://www.mysql.com/)
 [![Docker](https://img.shields.io/badge/Docker-Enabled-2496ed.svg)](https://www.docker.com/)
-[![AWS EC2](https://img.shields.io/badge/AWS-EC2%20Deployed-ff9900.svg)](https://aws.amazon.com/ec2/)
+[![AWS EC2](https://img.shields.io/badge/AWS-EC2%20Deployed-ff9900.svg)](http://16.170.40.145:5173)
 [![Google Gemini AI](https://img.shields.io/badge/AI-Google%20Gemini-4285f4.svg)](https://ai.google.dev/)
+
+> 🚀 **LIVE DEMO LINKS FOR RECRUITERS & REVIEWERS:**
+> - 🌐 **Customer Banking Portal**: [http://16.170.40.145:5173](http://16.170.40.145:5173)
+> - 👑 **Executive Admin Control Center**: [http://16.170.40.145:5173/admin/login](http://16.170.40.145:5173/admin/login)
+> - ⚡ **Fraud Detection Swagger API**: [http://16.170.40.145:5000/swagger](http://16.170.40.145:5000/swagger)
 
 An enterprise-grade, distributed microservices banking application built with **Spring Boot 3**, **.NET 8**, **React + Vite (Glassmorphic UI)**, **MySQL 8**, and **Google Gemini AI**. The system features real-time transaction processing, high-value transfer verification, automated fraud detection, IVR call simulation, and an Executive Admin Control Center.
 
@@ -81,6 +86,18 @@ The application is decomposed into 9 autonomous microservices communicating via 
 
 ---
 
+## 🌐 Live Deployed Application Links
+
+Recruiters and hiring managers can test the live production environment hosted on AWS EC2:
+
+| Application / Service | Live URL | Credentials / Notes |
+| :--- | :--- | :--- |
+| 🌐 **Customer Banking Portal** | [http://16.170.40.145:5173](http://16.170.40.145:5173) | Register a new customer account or log in |
+| 👑 **Executive Admin Portal** | [http://16.170.40.145:5173/admin/login](http://16.170.40.145:5173/admin/login) | Full live metrics & fraud command center |
+| ⚡ **Fraud Service Swagger API** | [http://16.170.40.145:5000/swagger](http://16.170.40.145:5000/swagger) | Interactive .NET 8 OpenAPI documentation |
+
+---
+
 ## 🚀 Getting Started (Local Deployment)
 
 ### Prerequisites
@@ -99,7 +116,7 @@ cd bank-management-system-fraud-detection
 docker compose up -d --build
 ```
 
-Access the application in your browser:
+Access the application locally:
 - **Customer Portal**: `http://localhost:5173`
 - **Admin Portal**: `http://localhost:5173/admin/login`
 
@@ -131,10 +148,10 @@ Ensure the following ports are open in your EC2 Security Group:
 ### 3. Deploy via SSH
 ```bash
 # Upload project code to EC2
-scp -i "your-key.pem" project.tar.gz ubuntu@<EC2_PUBLIC_IP>:~
+scp -i "your-key.pem" project.tar.gz ubuntu@16.170.40.145:~
 
 # SSH into EC2 instance
-ssh -i "your-key.pem" ubuntu@<EC2_PUBLIC_IP>
+ssh -i "your-key.pem" ubuntu@16.170.40.145
 
 # Extract and start containers
 tar -xvf project.tar.gz
