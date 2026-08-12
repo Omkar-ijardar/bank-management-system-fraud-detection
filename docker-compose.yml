@@ -1,0 +1,166 @@
+version: '3.8'
+
+services:
+  # 1. MySQL Database Service
+  mysql-db:
+    build:
+      context: ./database
+      dockerfile: Dockerfile
+    container_name: bank-mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: bankmanagementdb
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 2. Bank Auth Service (Port 9090)
+  bank-auth-service:
+    build:
+      context: ./backend/bank-auth-service
+      dockerfile: Dockerfile
+    container_name: bank-auth-service
+    ports:
+      - "9090:9090"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/bankmanagementdb?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SERVER_PORT: 9090
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+
+  # 3. Bank Account Service (Port 8082)
+  bank-account-service:
+    build:
+      context: ./backend/bank-account-service
+      dockerfile: Dockerfile
+    container_name: bank-account-service
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/bankmanagementdb?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SERVER_PORT: 8082
+      AUTH_SERVICE_BASE_URL: http://bank-auth-service:9090
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      bank-auth-service:
+        condition: service_started
+
+  # 4. Bank Transaction Service (Port 8086)
+  bank-transaction-service:
+    build:
+      context: ./backend/bank-transaction-service
+      dockerfile: Dockerfile
+    container_name: bank-transaction-service
+    ports:
+      - "8086:8086"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/bankmanagementdb?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SERVER_PORT: 8086
+      ACCOUNT_SERVICE_URL: http://bank-account-service:8082
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+
+  # 5. TransferFlow Service (Port 8083)
+  transfer-flow-service:
+    build:
+      context: ./backend/TransferFlow
+      dockerfile: Dockerfile
+    container_name: transfer-flow-service
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/bankmanagementdb?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SERVER_PORT: 8083
+      ACCOUNT_SERVICE_URL: http://bank-account-service:8082
+      FRAUD_SERVICE_URL: http://fraud-detection-service:5000/api/Fraud/check
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+
+  # 6. Bank Admin Service (Port 9098)
+  bank-admin-service:
+    build:
+      context: ./backend/Bank-Admin
+      dockerfile: Dockerfile
+    container_name: bank-admin-service
+    ports:
+      - "9098:9098"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/bankmanagementdb?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SERVER_PORT: 9098
+      AUTH_SERVICE_URL: http://bank-auth-service:9090
+      ACCOUNT_SERVICE_URL: http://bank-account-service:8082
+      TRANSACTION_SERVICE_URL: http://bank-transaction-service:8086
+      FRAUD_SERVICE_URL: http://fraud-detection-service:5000
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+
+  # 7. Bank IVR Service (Port 8084)
+  bank-ivr-service:
+    build:
+      context: ./backend/bank-ivr-service
+      dockerfile: Dockerfile
+    container_name: bank-ivr-service
+    ports:
+      - "8084:8084"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/bankmanagementdb?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SERVER_PORT: 8084
+      ACCOUNT_SERVICE_URL: http://bank-account-service:8082
+      TRANSFER_SERVICE_URL: http://transfer-flow-service:8083
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+
+  # 8. Fraud Detection Service (.NET 8 - Port 5000)
+  fraud-detection-service:
+    build:
+      context: ./backend/fraud-detection-service
+      dockerfile: Dockerfile
+    container_name: fraud-detection-service
+    ports:
+      - "5000:5000"
+    environment:
+      ConnectionStrings__FraudDb: "server=mysql-db;port=3306;database=bankmanagementdb;user=root;password=root"
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+
+  # 9. React Frontend Web Application (Port 5173 / 80)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: bank-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - bank-auth-service
+      - bank-account-service
+      - bank-transaction-service
+      - transfer-flow-service
+
+volumes:
+  mysql_data:
