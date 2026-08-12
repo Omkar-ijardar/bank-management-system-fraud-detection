@@ -9,7 +9,7 @@
 [![AWS EC2](https://img.shields.io/badge/AWS-EC2%20Deployed-ff9900.svg)](http://16.170.40.145:5173)
 [![Google Gemini AI](https://img.shields.io/badge/AI-Google%20Gemini-4285f4.svg)](https://ai.google.dev/)
 
-> 🚀 **LIVE DEMO LINKS FOR RECRUITERS & REVIEWERS:**
+> 🚀 **LIVE DEMO : **
 > - 🌐 **Customer Banking Portal**: [http://16.170.40.145:5173](http://16.170.40.145:5173)
 > - 👑 **Executive Admin Control Center**: [http://16.170.40.145:5173/admin/login](http://16.170.40.145:5173/admin/login)
 
